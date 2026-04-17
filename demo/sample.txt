@@ -1,0 +1,14 @@
+Agent Loop Demo — Sample File
+
+An agent loop is a while loop driven by the model's stopReason.
+
+Each iteration, the agent sends the current context (messages + tools) to the LLM.
+The LLM responds with either:
+  - stopReason "stop"    → the agent is done, exit the loop
+  - stopReason "toolUse" → the agent must call tools, append results, and loop again
+
+This simple mechanism is the foundation of all modern LLM-powered agents.
+
+Files read:
+  demo/sample.txt  — this file (explains the concept)
+  demo/code.js     — a JavaScript example you can ask about
