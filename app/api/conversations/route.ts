@@ -1,16 +1,16 @@
-// data-agent/packages/agent-loop/app/api/conversations/route.ts
+// app/api/conversations/route.ts
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
+import pool from "@/lib/db";
 import { listConversations, createConversation } from "@/lib/conversations";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const conversations = listConversations(db);
+  const conversations = await listConversations(pool);
   return NextResponse.json(conversations);
 }
 
 export async function POST() {
-  const conversation = createConversation(db);
+  const conversation = await createConversation(pool);
   return NextResponse.json(conversation);
 }

@@ -1,6 +1,6 @@
-// data-agent/packages/agent-loop/app/api/conversations/[id]/route.ts
+// app/api/conversations/[id]/route.ts
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
+import pool from "@/lib/db";
 import { getConversation, updateConversation, deleteConversation } from "@/lib/conversations";
 
 export const runtime = "nodejs";
@@ -9,7 +9,7 @@ export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const conversation = getConversation(db, params.id);
+  const conversation = await getConversation(pool, params.id);
   if (!conversation) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -30,7 +30,7 @@ export async function PATCH(
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
-  const updated = updateConversation(db, params.id, patch);
+  const updated = await updateConversation(pool, params.id, patch);
   if (!updated) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -41,7 +41,7 @@ export async function DELETE(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const deleted = deleteConversation(db, params.id);
+  const deleted = await deleteConversation(pool, params.id);
   if (!deleted) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

@@ -1,20 +1,30 @@
-// data-agent/packages/agent-loop/lib/db.ts
-import Database from "better-sqlite3";
-import path from "node:path";
+// lib/db.ts
+import pg from "pg";
 
-const DB_PATH = path.join(process.cwd(), "data.db");
+const { Pool } = pg;
 
-const db = new Database(DB_PATH);
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is not set");
+}
 
-db.exec(`
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.DATABASE_URL.includes("localhost") ||
+    process.env.DATABASE_URL.includes("127.0.0.1")
+      ? false
+      : { rejectUnauthorized: false },
+});
+
+await pool.query(`
   CREATE TABLE IF NOT EXISTS conversations (
     id         TEXT    PRIMARY KEY,
     title      TEXT    NOT NULL,
-    messages   TEXT    NOT NULL DEFAULT '[]',
-    timeline   TEXT    NOT NULL DEFAULT '[]',
-    created_at INTEGER NOT NULL,
-    updated_at INTEGER NOT NULL
+    messages   JSONB   NOT NULL DEFAULT '[]',
+    timeline   JSONB   NOT NULL DEFAULT '[]',
+    created_at BIGINT  NOT NULL,
+    updated_at BIGINT  NOT NULL
   )
 `);
 
-export default db;
+export default pool;

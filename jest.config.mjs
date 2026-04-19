@@ -1,9 +1,3 @@
-// data-agent/packages/agent-loop/jest.config.mjs
-import { fileURLToPath } from "url";
-import path from "path";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 export default {
   testEnvironment: "node",
   extensionsToTreatAsEsm: [".ts"],
@@ -12,8 +6,9 @@ export default {
   },
   transform: {
     "^.+\\.tsx?$": [
-      path.join(__dirname, "../../node_modules/ts-jest"),
+      "ts-jest",
       { useESM: true },
     ],
   },
+  setupFiles: ["./jest.setup.ts"],
 };

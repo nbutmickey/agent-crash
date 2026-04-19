@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ["@mariozechner/pi-ai", "better-sqlite3"],
+    serverComponentsExternalPackages: ["@mariozechner/pi-ai", "pg"],
   },
 };
 
