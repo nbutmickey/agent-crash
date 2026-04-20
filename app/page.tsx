@@ -241,8 +241,9 @@ export default function Page() {
         setTimeline((prev) => {
           const copy = [...prev];
           for (let i = copy.length - 1; i >= 0; i--) {
-            if (copy[i].kind === "assistant") {
-              copy[i] = { ...copy[i], text: (copy[i] as { kind: "assistant"; text: string }).text + event.delta };
+            const item = copy[i];
+            if (item.kind === "assistant") {
+              copy[i] = { kind: "assistant", text: item.text + event.delta };
               break;
             }
           }

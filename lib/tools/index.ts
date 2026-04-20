@@ -96,5 +96,5 @@ export function makeToolResultMessage(
 export function extractToolCalls(
   content: Array<{ type: string; [key: string]: unknown }>
 ): ToolCall[] {
-  return content.filter((c): c is ToolCall => c.type === "toolCall");
+  return content.filter((c) => c.type === "toolCall") as unknown as ToolCall[];
 }
